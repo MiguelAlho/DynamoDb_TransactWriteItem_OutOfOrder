@@ -82,8 +82,6 @@ namespace TransactionalProducer
         {
             List<Transaction> transactions = new List<Transaction>();
 
-            //Create aggregate event map´
-            //add 2 per aggregate, and a third on each at the end
             for (long agg = 0; agg < TotalAggregates; agg++)
             {
                 transactions.Add(new Transaction(new List<Event>() { 
