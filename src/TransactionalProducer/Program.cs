@@ -97,8 +97,9 @@ namespace TransactionalProducer
             {
                 finalTransaction.Events.Add(new Event(agg, 2, SequenceNumber++, SingleBytePayload));
             }
+            transactions.Add(finalTransaction);
 
-            Console.WriteLine($"Final transaction with {TotalAggregates} events appended. Total {transactions.Count} events.");
+            Console.WriteLine($"Final transaction with {TotalAggregates} events appended. Total {transactions.Count} transactions.");
 
             return transactions;
         }

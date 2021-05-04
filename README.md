@@ -46,4 +46,33 @@ lambda can be deployed by:
 
 Once completed, check the cloudwatch logs for output and ordering info.
 
+## Verified behaviour 
+
+Sample ooutput at start of processing:
+
+```
+2021-05-04T20:20:12.292+01:00	Stream processing complete.
+2021-05-04T20:20:12.298+01:00	Beginning b699e189-82ed-4d89-9b3f-0bfcd66829c9 to process 2 records...
+2021-05-04T20:20:12.444+01:00	Read 1: 0, 1 - 19382500000000018927626460
+2021-05-04T20:20:12.444+01:00	Read 0: 0, 0 - 19382600000000018927626461
+2021-05-04T20:20:12.461+01:00	Stream processing complete.
+2021-05-04T20:20:12.462+01:00	END RequestId: b23a13d9-0d4e-4932-b7c7-3f80c919e3c1
+2021-05-04T20:20:12.462+01:00	REPORT RequestId: b23a13d9-0d4e-4932-b7c7-3f80c919e3c1 Duration: 167.17 ms Billed Duration: 168 ms Memory Size: 512 MB Max Memory Used: 69 MB
+```
+
+Notice the bit :
+
+```
+Read <Seq number>: <AggregateId>, <Version> - 19382500000000018927626460
+...
+Read 1: 0, 1 - 19382500000000018927626460
+Read 0: 0, 0 - 19382600000000018927626461
+```
+
+Event #1 is pushed to the stream before event #0, on the same aggregate (0). So though they were added in order to the PUT Items list in the TransactWriteRequest, they end up in the stream out of order.
+
+This contradicts the docs, though it could be by design.
+
+____ 
+
 You'll need to clear the DB between executions.
